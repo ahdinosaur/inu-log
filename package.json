@@ -1,6 +1,6 @@
 {
   "name": "inu-log",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "monitor &#x60;inu&#x60; apps",
   "main": "index.js",
   "scripts": {
