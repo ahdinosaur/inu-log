@@ -1,6 +1,6 @@
 # inu-log
 
-monitor &#x60;inu&#x60; apps
+monitor [`inu`](https://github.com/ahdinosaur/inu) apps
 
 ```shell
 npm install --save inu-log
@@ -8,7 +8,15 @@ npm install --save inu-log
 
 ## usage
 
-### `inuLog = require('inu-log')`
+### `log = require('inu-log')`
+
+### `logged = log(app)`
+
+given an [`inu`](https://github.com/ahdinosaur/inu) app, returns a new app that monitors `app.init`, `app.update`, and `app.run`.
+
+## credit
+
+initial code lifted from [`gcanti/tom#monitoring`](https://github.com/gcanti/tom#monitoring)
 
 ## license
 
