@@ -6,17 +6,17 @@ module.exports = inuLog
 
 function inuLog (app) {
   return extend(app, {
-    init() {
+    init: function () {
       const init = app.init()
       console.log('init:', init)
       return init
     },
-    update(model, action) {
+    update: function (model, action) {
       const state = app.update(model, action)
       logAction(model, action, state)
       return state
     },
-    run(effect, sources) {
+    run: function (effect, sources) {
       const nextActions = app.run(effect, sources)
       logEffect(effect, nextActions)
       return nextActions
