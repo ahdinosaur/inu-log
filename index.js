@@ -1,6 +1,6 @@
 const extend = require('xtend')
 const pull = require('pull-stream/pull')
-const drain = require('pull-stream/sinks/drain')
+const through = require('pull-stream/throughs/through')
 
 module.exports = inuLog
 
@@ -18,8 +18,7 @@ function inuLog (app) {
     },
     run: function (effect, sources) {
       const nextActions = app.run(effect, sources)
-      logEffect(effect, nextActions)
-      return nextActions
+      return logEffect(effect, nextActions)
     }
   })
 }
@@ -39,14 +38,15 @@ function logAction (model, action, state) {
 function logEffect (effect, nextActions) {
   if (nextActions) {
     // group produced actions
-    console.groupCollapsed('effect:', effect)
-    pull(
+    console.log('effect:', effect)
+
+    return pull(
       nextActions,
-      drain(
+      through(
+        // TODO pick a color and paint logs in color
         (action) => console.log('action:', action),
         (err) => {
           if (err) console.error('error:', err)
-          console.groupEnd()
         }
       )
     )
