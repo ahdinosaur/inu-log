@@ -2,9 +2,15 @@ const extend = require('xtend')
 const pull = require('pull-stream/pull')
 const through = require('pull-stream/throughs/through')
 
-module.exports = inuLog
+module.exports = {
+  gives: { inu: { enhancer: true } },
+  create: () => ({ inu: { enhancer } } )
+}
 
-function inuLog (app) {
+// TODO re-factor using catstack-log
+// and child logs for every "group" of log messages
+
+function enhancer (app) {
   return extend(app, {
     init: function () {
       const init = app.init()
@@ -16,9 +22,9 @@ function inuLog (app) {
       logAction(model, action, state)
       return state
     },
-    run: function (effect, sources) {
-      const nextActions = app.run(effect, sources)
-      return logEffect(effect, nextActions)
+    run: function (model, effect, sources) {
+      const nextActions = app.run(model, effect, sources)
+      return logEffect(model, effect, nextActions)
     }
   })
 }
@@ -35,10 +41,11 @@ function logAction (model, action, state) {
   console.groupEnd()
 }
 
-function logEffect (effect, nextActions) {
+function logEffect (model, effect, nextActions) {
   if (nextActions) {
     // group produced actions
     console.log('effect:', effect)
+    console.log('current model:', effect)
 
     return pull(
       nextActions,
